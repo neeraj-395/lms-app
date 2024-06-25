@@ -1,2 +1,2 @@
 # library-management-app
-A library management application using qt framework with c++ and mysql database.
+A library management system using Qt framework with C++ and MySQL database.
