@@ -1,8 +1,9 @@
-#include <QMessageBox>
-
 #include "gui/loginform.h"
 #include "ui_loginform.h"
+
 #include "database/mysqlquery.h"
+
+#include <QMessageBox>
 
 LoginForm::LoginForm(QWidget *parent)
     : QWidget(parent)
@@ -20,12 +21,12 @@ LoginForm::~LoginForm()
 
 void LoginForm::loginHandler()
 {
-    QString username = ui->usernameLineEdit->text();
+    QString name = ui->nameLineEdit->text();
     QString password = ui->passwordLineEdit->text();
 
     MySqlQuery query;
 
-    bool result = query.execQuery(getQuery(), { {":name", username} });
+    bool result = query.execQuery(getQuery(), { {":name", name} });
 
     if(!result) {
         QMessageBox::critical(this, "Database failure", "Unable to execute query.");
@@ -37,15 +38,14 @@ void LoginForm::loginHandler()
         return;
     }
 
-    quint8 id = query.record().value(0).toUInt();
+    emit loginSuccess(accType, query.record().value("id").toUInt(), name);
 
-    ui->usernameLineEdit->clear();
+    ui->nameLineEdit->clear();
     ui->passwordLineEdit->clear();
-
-    emit loginSuccess(accType, id, username);
 }
 
-void LoginForm::setLoginUi(const QString title, Acc::Type type) {
+void LoginForm::setLoginUi(const QString title, Acc::Type type)
+{
     QString titleStyle = R"(
         <p align="center">
             <span style="font-size:28pt; font-weight:400;">%1</span>
@@ -55,8 +55,10 @@ void LoginForm::setLoginUi(const QString title, Acc::Type type) {
     this->accType = type;
 }
 
-QString LoginForm::getQuery() {
-    switch(accType) {
+QString LoginForm::getQuery()
+{
+    switch(accType)
+    {
     case Acc::User:
         return "SELECT id, password FROM users WHERE name = :name";
     case Acc::Librarian:

@@ -4,15 +4,20 @@
 #include <QList>
 #include <QDialog>
 #include <QLineEdit>
-#include <QSqlRecord>
-
-#include "database/mysqlquery.h"
-
-namespace Ui { class BookManager; }
 
 namespace BookOp
-{ 
-    enum Type{ AddBook, RemoveBook, SearchBook, EditBook };
+{
+    enum Type   {
+        AddBook,
+        RemoveBook,
+        SearchBook,
+        EditBook
+    };
+}
+
+namespace Ui
+{
+    class BookManager;
 }
 
 class BookManager : public QDialog
@@ -23,14 +28,17 @@ public:
     explicit BookManager(QWidget *parent = nullptr);
     ~BookManager();
 
-    void initManager(const QString title, BookOp::Type type);
+    void initManager(const QString &title, BookOp::Type type);
 
 private slots:
-    void addBook();
-    void editBook();
-    void searchBook();
-    void removeBook();
-    void loadBookData();
+    void handleAddBookRequest();
+    void handleEditBookRequest();
+    void handleSearchBookRequest();
+    void handleRemoveBookRequest();
+    void handleLoadBookDataRequest();
+
+signals:
+    void internalServiceError();
 
 protected:
     using QWidget::show;

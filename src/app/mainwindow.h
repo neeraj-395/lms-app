@@ -23,8 +23,8 @@ public:
 
 private slots:
     void showMainInterface();
-    void handleConnectionError(const QString &message);
-    void onLoginSuccess(Acc::Type type, quint8 id, QString name);
+    void showLoginInterface(const QString &title, Acc::Type type);
+    void handleLogin(Acc::Type type, uint id, const QString name);
 
 protected:
     using QWidget::show;
@@ -39,8 +39,9 @@ private:
 
 private:
     void setupConnections();
-    void setupDatabaseConnection();
     void setupStackedWidgets();
+    void setupDatabaseConnection();
+    void alertConnectionError(const QString &message);
 };
 
 #endif // MAINWINDOW_H

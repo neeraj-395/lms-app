@@ -28,29 +28,41 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::handleConnectionError(const QString &message) 
+void MainWindow::alertConnectionError(const QString &message)
 {
     QMessageBox::critical(this, "Connection failed", message, QMessageBox::Ok);
 }
 
-void MainWindow::onLoginSuccess(Acc::Type type, quint8 id, QString name) 
+void MainWindow::handleLogin(Acc::Type type, const uint id, const QString name)
 {
-    switch(type) {
-    case Acc::User:
-        widgets->setCurrentWidget(user_ui);
-        user_ui->setUser(id, name);
-        break;
+    switch(type)
+    {
+        case Acc::User:
+            widgets->setCurrentWidget(user_ui);
+            user_ui->setUser(id, name);
+            break;
 
-    case Acc::Librarian:
-        widgets->setCurrentWidget(librarian_ui);
-        librarian_ui->setLibrarian(id, name);
-        break;
+        case Acc::Librarian:
+            widgets->setCurrentWidget(librarian_ui);
+            librarian_ui->setLibrarian(id, name);
+            break;
     }
 }
 
 void MainWindow::showMainInterface()
 {
     widgets->setCurrentIndex(0);
+}
+
+void MainWindow::showLoginInterface(const QString &title, Acc::Type type)
+{
+    if(!db.checkConnection()) {
+        alertConnectionError("Unable to open database connection. "
+                             "Please try again later.");
+        return;
+    }
+    login_ui->setLoginUi(title, type);
+    widgets->setCurrentWidget(login_ui);
 }
 
 void MainWindow::setupStackedWidgets() 
@@ -66,62 +78,50 @@ void MainWindow::setupStackedWidgets()
 void MainWindow::setupDatabaseConnection() 
 {
     if(!QSqlDatabase::isDriverAvailable("QMYSQL")) {
-        QMessageBox::critical(this,
-                              "Connection failed",
-                              "Database driver QMYSQL is not available.",
-                              QMessageBox::Ok);
+        alertConnectionError("Database driver QMYSQL is not available.");
         return;
     }
 
-    QString config_file("db.config.ini");
+    QString config_file(":/res/config.db.ini");
     QFile check_file(config_file);
     if(!check_file.exists()) {
-        QMessageBox::critical(this,
-                              "Connection failed",
-                              "File db.config.ini is missing from"
-                              " the executable diretory",
-                              QMessageBox::Ok);
+        alertConnectionError("Unable to find the configuration file (config.db.ini).");
         return;
     }
     
     QSettings settings(config_file, QSettings::IniFormat);
     if(!db.connect(settings.value("DB_NAME").toString(),
-                   settings.value("DB_HOSTNAME").toString(),
-                   settings.value("DB_USERNAME").toString(),
-                   settings.value("DB_PASSWORD").toString(),
+                   settings.value("DB_HOST").toString(),
+                   settings.value("DB_USER").toString(),
+                   settings.value("DB_PASS").toString(),
                    settings.value("DB_PORT").toInt()))
     {
-        QMessageBox::critical(this,
-                              "Connection failed",
-                              "Unable to open database connection",
-                              QMessageBox::Ok);
+        alertConnectionError("Unable to open database connection.");
         return;
     }
 }
 
 void MainWindow::setupConnections() 
 {
-    connect(login_ui, &LoginForm::loginSuccess,this, &MainWindow::onLoginSuccess);
-
-    connect(login_ui, &LoginForm::backToMain, this, &MainWindow::showMainInterface);
-
-    connect(user_ui, &UserPortal::backToMain, this, &MainWindow::showMainInterface);
-
-    connect(librarian_ui, &LibrarianPortal::backToMain, this, &MainWindow::showMainInterface);
-
     connect(ui->userLogin, &QPushButton::clicked, this, [this]() {
-        login_ui->setLoginUi("User Login", Acc::User);
-        widgets->setCurrentWidget(login_ui);
+        showLoginInterface("User Login", Acc::User);
+    });
+
+    connect(ui->librarianLogin, &QPushButton::clicked, this, [this]() {
+        showLoginInterface("Librarian Login", Acc::Librarian);
     });
 
     connect(widgets, &QStackedWidget::currentChanged, this, [this]() {
         resize(widgets->currentWidget()->size());
     });
 
-    connect(ui->librarianLogin, &QPushButton::clicked, this, [this]() {
-        login_ui->setLoginUi("Librarian Login", Acc::Librarian);
-        widgets->setCurrentWidget(login_ui);
-    });
+    connect(login_ui, &LoginForm::loginSuccess,this, &MainWindow::handleLogin);
+
+    connect(login_ui, &LoginForm::backToMain, this, &MainWindow::showMainInterface);
+
+    connect(user_ui, &UserPortal::logoutRequestToMain, this, &MainWindow::showMainInterface);
+
+    connect(librarian_ui, &LibrarianPortal::logoutRequestToMain, this, &MainWindow::showMainInterface);
 }
 
 

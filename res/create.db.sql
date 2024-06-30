@@ -4,26 +4,26 @@ USE lms_db;
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    phone VARCHAR(20) NOT NULL
+    phone VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS librarians (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    phone VARCHAR(20) NOT NULL
+    phone VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS books (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     author VARCHAR(255) NOT NULL,
-    isbn VARCHAR(20) UNIQUE NOT NULL,
-    available BOOLEAN DEFAULT TRUE
+    isbn VARCHAR(13) UNIQUE NOT NULL,
+    quantity INT CHECK(quantity > 0) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS borrowers (
@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS borrowers (
     book_id INT NOT NULL,
     user_id INT NOT NULL,
     checkout_date DATE DEFAULT (CURRENT_DATE) NOT NULL,
-    return_by DATE NOT NULL,
-    return_status BOOLEAN DEFAULT FALSE,
+    return_date DATE NOT NULL,
+    returned BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (book_id) REFERENCES books(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -41,6 +41,6 @@ CREATE TABLE IF NOT EXISTS fines (
     id INT AUTO_INCREMENT PRIMARY KEY,
     borrower_id INT NOT NULL,
     fine_amount DECIMAL(8, 2) NOT NULL,
-    pay_status BOOLEAN DEFAULT FALSE,
+    paid BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (borrower_id) REFERENCES borrowers(id)
 );

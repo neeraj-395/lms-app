@@ -49,10 +49,10 @@
   <widget class="QGroupBox" name="bookManageBox">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>30</x>
      <y>100</y>
-     <width>161</width>
-     <height>301</height>
+     <width>571</width>
+     <height>90</height>
     </rect>
    </property>
    <property name="font">
@@ -69,48 +69,13 @@
    <property name="checkable">
     <bool>false</bool>
    </property>
-   <widget class="QPushButton" name="addNewBook">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>100</y>
-      <width>141</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="text">
-     <string>Add New Book</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="removeBook">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>170</y>
-      <width>141</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Remove Book</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="bookSearchBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>141</width>
-      <height>51</height>
+      <width>130</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -126,17 +91,52 @@
      <string>Book Search</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="addNewBookBtn">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>30</y>
+      <width>130</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Add New Book</string>
+    </property>
+   </widget>
    <widget class="QPushButton" name="editBookDataBtn">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>240</y>
-      <width>141</width>
-      <height>51</height>
+      <x>290</x>
+      <y>30</y>
+      <width>130</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="text">
      <string>Edit Book Data</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="removeBookBtn">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>30</y>
+      <width>130</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Remove Book</string>
     </property>
    </widget>
   </widget>
@@ -156,10 +156,10 @@
   <widget class="QGroupBox" name="transactionBox">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>100</y>
-     <width>181</width>
-     <height>161</height>
+     <x>100</x>
+     <y>210</y>
+     <width>430</width>
+     <height>90</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -177,116 +177,70 @@
     <bool>true</bool>
    </property>
    <property name="title">
-    <string>Transaction Management</string>
+    <string>Transac Management</string>
    </property>
    <property name="checkable">
     <bool>false</bool>
    </property>
-   <widget class="QPushButton" name="checkoutBook">
+   <widget class="QPushButton" name="checkoutBookBtn">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>30</y>
-      <width>141</width>
-      <height>51</height>
+      <width>130</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="text">
      <string>Checkout Book</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="returnBook">
+   <widget class="QPushButton" name="returnBookBtn">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>100</y>
-      <width>141</width>
-      <height>51</height>
+      <x>150</x>
+      <y>30</y>
+      <width>130</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="text">
      <string>Return Book</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QGroupBox" name="fineManageBox">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>100</y>
-     <width>181</width>
-     <height>161</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-    </font>
-   </property>
-   <property name="autoFillBackground">
-    <bool>true</bool>
-   </property>
-   <property name="title">
-    <string>Fine Management</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-   <widget class="QPushButton" name="calculateFine">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>141</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="text">
-     <string>Calculate Fine</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="viewOverdueBooks">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>100</y>
-      <width>161</width>
-      <height>51</height>
+      <x>290</x>
+      <y>30</y>
+      <width>130</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="text">
-     <string>View Overdue Books</string>
+     <string>Overdue Books</string>
     </property>
    </widget>
   </widget>
   <widget class="QGroupBox" name="logoutBox">
    <property name="geometry">
     <rect>
-     <x>450</x>
-     <y>300</y>
-     <width>161</width>
-     <height>91</height>
+     <x>240</x>
+     <y>320</y>
+     <width>150</width>
+     <height>90</height>
     </rect>
    </property>
    <property name="title">
-    <string>librarian name</string>
+    <string>Librarian Name</string>
    </property>
    <widget class="QPushButton" name="logoutBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>141</width>
-      <height>51</height>
+      <width>130</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="text">
@@ -294,7 +248,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QLabel" name="Credit">
+  <widget class="QLabel" name="creditLabel">
    <property name="geometry">
     <rect>
      <x>10</x>

@@ -48,7 +48,7 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="mainTitle">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -117,7 +117,7 @@
    <property name="checkable">
     <bool>false</bool>
    </property>
-   <widget class="QPushButton" name="searchBook">
+   <widget class="QPushButton" name="searchBookBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -133,7 +133,7 @@
      <number>100</number>
     </property>
    </widget>
-   <widget class="QPushButton" name="viewFineDetails">
+   <widget class="QPushButton" name="fineDetailBtn">
     <property name="geometry">
      <rect>
       <x>350</x>
@@ -143,13 +143,13 @@
      </rect>
     </property>
     <property name="text">
-     <string>View Fine Details</string>
+     <string>Fine Detail</string>
     </property>
     <property name="autoRepeatInterval">
      <number>100</number>
     </property>
    </widget>
-   <widget class="QPushButton" name="viewBookBorrowed">
+   <widget class="QPushButton" name="bookBorrowedBtn">
     <property name="geometry">
      <rect>
       <x>180</x>
@@ -168,14 +168,14 @@
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>View Book Borrowed</string>
+     <string>Book Borrowed</string>
     </property>
     <property name="autoRepeatInterval">
      <number>100</number>
     </property>
    </widget>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="creditLabel">
    <property name="geometry">
     <rect>
      <x>10</x>

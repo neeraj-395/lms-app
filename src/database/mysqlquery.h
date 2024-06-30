@@ -7,14 +7,19 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <QSqlQueryModel>
 
 class MySqlQuery : public QSqlQuery {
 
 public:
-    MySqlQuery();
+    explicit MySqlQuery(const QString connectionName = QLatin1String(
+        QSqlDatabase::defaultConnection
+    ));
+
     QList<QSqlRecord> getRecords();
-    bool execQuery(const QString stmt);
-    bool execQuery(const QString stmt, const QHash<QString, QVariant> bind_values);
+    bool execQuery(const QString &stmt);
+    bool execQuery(const QString &stmt, const QHash<QString, QVariant> &bind_values);
+    QSqlQueryModel *getSqlQueryModel();
 };
 
 #endif // MYSQLDB_H

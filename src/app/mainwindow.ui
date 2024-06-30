@@ -70,7 +70,7 @@
      <bold>false</bold>
     </font>
    </property>
-   <widget class="QLabel" name="Title">
+   <widget class="QLabel" name="title">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -98,7 +98,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="loginGroupBox">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -137,7 +137,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QLabel" name="Credit">
+   <widget class="QLabel" name="creditLabel">
     <property name="geometry">
      <rect>
       <x>80</x>

@@ -1,34 +1,11 @@
-#include <QMessageBox>
-
 #include "gui/userportal.h"
 #include "ui_userportal.h"
 
-#include "models/datatable.h"
+#include "utils/qutils.h"
+#include "utils/userqueries.h"
 #include "database/mysqlquery.h"
 
-namespace TableHeaders {
-    static const char* BookBorrowed[] = {
-        "Title", "Author", "ISBN", "Checkout Date", "Return by", "Returned?"
-    };
-    static const char* FineDetails[] = {
-        "Fine Id", "Title", "ISBN", "Fine Amount(Rs)", "Paid?"
-    };
-}
-
-namespace UserQueries {
-    static const char* BookBorrowed = R"(
-        SELECT b.title, b.author, b.isbn, bor.checkout_date, 
-        bor.return_by, bor.return_status FROM borrowers bor 
-        JOIN books b ON bor.book_id = b.id JOIN users u 
-        ON bor.user_id = u.id WHERE u.id = :user_id;
-    )";
-
-    static const char* FineDetails = R"(
-        SELECT f.id, b.title, b.isbn, f.fine_amount, f.pay_status 
-        FROM fines f JOIN borrowers bor ON f.borrower_id = bor.id 
-        JOIN books b ON bor.book_id = b.id WHERE bor.user_id = :user_id;
-    )";
-}
+#include <QMessageBox>
 
 UserPortal::UserPortal(QWidget *parent)
     : QWidget(parent)
@@ -44,75 +21,65 @@ UserPortal::~UserPortal()
     delete ui;
 }
 
-void UserPortal::bookSearch()
+void UserPortal::handleLogoutRequest()
+{
+    emit logoutRequestToMain();
+}
+
+void UserPortal::handlebookSearchRequest()
 {
     book_ui->initManager("Search for Books", BookOp::SearchBook);
 }
 
 
-void UserPortal::viewBookBorrowed()
+void UserPortal::handleBookBorrowedRequest()
 {
     MySqlQuery query;
 
-    bool result = query.execQuery(UserQueries::BookBorrowed, {
-        {":user_id", userId}
-    });
+    bool result = query.execQuery(UserQueries::bookBorrowed(user_id));
+    if (!result) { handleInternalServiceError(); return; }
 
-    if(!result) {
-        QMessageBox::critical(this, "Operation failed", "Database error occured");
+    if(!query.next()) {
+        Alerts::info(this, "No book were borrowed by you yet!");
         return;
     }
-
-    QList<QSqlRecord> data = query.getRecords();
-
-    if(data.isEmpty()){
-        QMessageBox::information(this, "Not Found", "No Book was Borrowed yet!");
-        return;
-    }
-
-    DataTable *bookBorrowedTable = new DataTable("Book Borrowed Data");
-    bookBorrowedTable->populateTable(data, TableHeaders::BookBorrowed);
-    bookBorrowedTable->show();
 }
 
 
-void UserPortal:: viewFineDetails()
+void UserPortal:: handleFineRecordRequest()
 {
     MySqlQuery query;
 
-    bool result = query.execQuery(UserQueries::FineDetails, {
-        {":user_id", userId}
-    });
+    bool result = query.execQuery(UserQueries::fineDetails(user_id));
+    if (!result) { handleInternalServiceError(); return; }
 
-    if(!result) {
-        QMessageBox::critical(this, "Operation failed", "Database error occured");
+    if(!query.next()){
+        Alerts::info(this, "No due fine is pending by you!");
         return;
     }
-
-    QList<QSqlRecord> data = query.getRecords();
-
-    if(data.isEmpty()){
-        QMessageBox::information(this, "Not Found", "No due fine is pending!");
-    }
-
-    DataTable *fineDetailsTable = new DataTable("Fine Details Data");
-    fineDetailsTable->populateTable(data , TableHeaders::FineDetails);
-    fineDetailsTable->show();
 }
 
-void UserPortal::setUser(quint8 id, QString name){
-    this->userId = id;
-    this->userName = name;
+void UserPortal::handleInternalServiceError()
+{
+    Alerts::critical(this, "The current opeartion failed due "
+                           "to an internal service error.");
+}
+
+void UserPortal::setUser(const uint id, const QString &name){
+    this->user_id = id;
+    this->user_name = name;
     ui->logoutBox->setTitle(name);
 }
 
 void UserPortal::setupConnections()
 {
-    connect(ui->logoutBtn, &QPushButton::clicked, this, &UserPortal::backToMain);
+    connect(ui->logoutBtn, &QPushButton::clicked, this, &UserPortal::handleLogoutRequest);
 
-    connect(ui->searchBook, &QPushButton::clicked, this, &UserPortal::bookSearch);
+    connect(ui->searchBookBtn, &QPushButton::clicked, this, &UserPortal::handlebookSearchRequest);
 
-    connect(ui->viewFineDetails, &QPushButton::clicked, this, &UserPortal::viewFineDetails);
+    connect(ui->fineDetailBtn, &QPushButton::clicked, this, &UserPortal::handleFineRecordRequest);
 
-    connect(ui->viewBookBorrowed, &QPushButton::clicked, this, &UserPortal::viewBookBorrowed);
+    connect(ui->bookBorrowedBtn, &QPushButton::clicked, this, &UserPortal::handleBookBorrowedRequest);
+
+    connect(book_ui, &BookManager::internalServiceError, this, &UserPortal::handleInternalServiceError);
 }

@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QSqlRecord>
 
-#include "models/bookmanager.h"
+#include "managers/bookmanager.h"
 
 namespace Ui { class UserPortal; }
 
@@ -16,19 +16,21 @@ public:
     explicit UserPortal(QWidget *parent = nullptr);
     ~UserPortal();
 
-    void setUser(quint8 id, QString name);
+    void setUser(const uint id, const QString &name);
 
 private slots:
-    void bookSearch();
-    void viewFineDetails();
-    void viewBookBorrowed();
+    void handleLogoutRequest();
+    void handlebookSearchRequest();
+    void handleFineRecordRequest();
+    void handleBookBorrowedRequest();
+    void handleInternalServiceError();
 
 signals:
-    void backToMain();
+    void logoutRequestToMain();
 
 private:
-    quint8 userId;
-    QString userName;
+    uint user_id;
+    QString user_name;
     Ui::UserPortal *ui;
     BookManager *book_ui;
     

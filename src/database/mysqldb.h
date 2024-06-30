@@ -24,10 +24,6 @@ public:
     bool transaction();
     bool createDatabase();
     bool checkConnection();
-    const QString getConnectionName();
-
-protected:
-    QSqlDatabase &getConnection();
 
 private:
     QSqlDatabase db;

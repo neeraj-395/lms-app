@@ -4,7 +4,10 @@
 #include <QWidget>
 
 // Enum to represent the type of person in the library management system
-namespace Acc { enum Type { User, Librarian }; }
+namespace Acc
+{
+    enum Type { User, Librarian };
+}
 
 namespace Ui { class LoginForm; }
 
@@ -20,7 +23,7 @@ public:
 
 signals:
     void backToMain();
-    void loginSuccess(Acc::Type type, quint8 id, QString name);
+    void loginSuccess(Acc::Type type, const uint id, const QString &name);
 
 private slots:
     void loginHandler();

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>config.db.ini</file>
+        <file>create.db.sql</file>
+        <file>insert.db.sql</file>
+    </qresource>
+</RCC>

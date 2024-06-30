@@ -5,34 +5,23 @@
 #include <QLineEdit>
 #include <QWidget>
 #include <QSqlRecord>
-#include <initializer_list>
+#include <QMessageBox>
+#include <QAbstractItemModel>
 
-namespace UiUtils {
+namespace QUtils
+{
+    bool validateLineEdits(const QList<QLineEdit*> &lineEdits);
+    void clearLineEdits(QList<QLineEdit*> lineEdits);
+    void setLineEditsReadOnly(QList<QLineEdit*> lineEdits, bool readOnly);
+    void setWidgetsEnabled(const QList<QWidget*> &widgets, bool enable);
+    void setLineEditsText(const QList<QLineEdit*> &lineEdits, const QSqlRecord &data);
+    void showTableViewDialog(QWidget *parent, const QString &title, QAbstractItemModel *model);
+}
 
-    void setFieldsEnabled(bool enabled, const std::initializer_list<QWidget*> fields){
-        for(QWidget* field : fields){
-            field->setEnabled(enabled);
-        }
-    }
-
-    bool validateLineEdits(QList<QLineEdit*> list){
-        if(list.isEmpty()) return false;
-
-        for(QLineEdit* lineEdit : list){
-            if(lineEdit && lineEdit->text().isEmpty()){
-                return false;
-            }
-        } return true;
-    }
-
-    void setLineEditsText(QList<QLineEdit*> list, QSqlRecord data = QSqlRecord()){
-        if(data.isEmpty()){
-            for (QLineEdit* line : list) line->clear();
-        } else {
-            for (int i=0; i < list.size(); ++i)
-                list[i]->setText(data.value(i).toString());
-        }
-    }
+namespace Alerts {
+    void warn(QWidget *parent, const QString &message);
+    void info(QWidget *parent, const QString &message);
+    void critical(QWidget *parent, const QString &message);
 }
 
 #endif // QUTILS_H

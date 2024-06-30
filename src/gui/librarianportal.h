@@ -2,7 +2,9 @@
 #define LIBRARIANPORTAL_H
 
 #include <QWidget>
-#include "models/bookmanager.h"
+
+#include "managers/bookmanager.h"
+#include "managers/transacmanager.h"
 
 namespace Ui { class LibrarianPortal; }
 
@@ -14,15 +16,21 @@ public:
     explicit LibrarianPortal(QWidget *parent = nullptr);
     ~LibrarianPortal();
 
-    void setLibrarian(quint8 id, QString name);
+    void setLibrarian(const uint id, const QString &name);
 
 signals:
-    void backToMain();
+    void logoutRequestToMain();
+
+private slots:
+    void handleLogoutRequest();
+    void handleInternalServiceError();
 
 private:
     Ui::LibrarianPortal *ui;
-    BookManager         *book_ui;
-    quint8              librarian_id;
+    BookManager         *book_wd;
+    TransacManager      *checkout_wd; // will generate mysql opening error
+    TransacManager      *return_wd; // will generate mysql opening error
+    uint                librarian_id;
     QString             librarian_name;
 
 private:
