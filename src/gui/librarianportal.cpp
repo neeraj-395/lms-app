@@ -49,7 +49,7 @@ void LibrarianPortal::setupConnection() {
         book_wd->initManager("Edit Book", BookOp::EditBook);
     });
     connect(ui->bookSearchBtn, &QPushButton::clicked, this, [this](){
-        book_wd->initManager("Search For Books", BookOp::SearchBook);
+        book_wd->initManager("Search for Books", BookOp::SearchBook);
     });
 
     connect(ui->checkoutBookBtn, &QPushButton::clicked, this, [this](){

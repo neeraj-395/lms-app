@@ -48,9 +48,7 @@ bool MySqlDatabase::checkConnection()
 }
 
 bool MySqlDatabase::transaction()
-{
-    if (!checkConnection()) return false;
-
+{   
     if (!db.transaction()) 
     {
         qCritical() << "Failed to start transaction:" << db.lastError().text();
@@ -61,9 +59,7 @@ bool MySqlDatabase::transaction()
 
 bool MySqlDatabase::commit()
 {
-    if (!checkConnection()) return false;
-
-    if (!db.commit()) 
+    if (!db.commit())
     {
         qCritical() << "Failed to commit transaction:" << db.lastError().text();
         return false;
@@ -73,8 +69,6 @@ bool MySqlDatabase::commit()
 
 bool MySqlDatabase::rollback()
 {
-    if (!checkConnection()) return false;
-
     if (!db.rollback())
     {
         qCritical() << "Failed to rollback transaction:" << db.lastError().text();

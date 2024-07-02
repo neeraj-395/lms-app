@@ -2,7 +2,9 @@
 #define TRANSACMANAGER_H
 
 #include <QDialog>
+#include <QLineEdit>
 
+#include "database/mysqldb.h"
 #include "database/mysqlquery.h"
 
 namespace TransacOp {
@@ -37,18 +39,20 @@ signals:
     void internalServiceError();
 
 private:
-    QString           borr_id_;
-    MySqlQuery        query_;
+    uint             borrower_id_;
     Ui::ReturnBook   *return_ui;
     Ui::CheckoutBook *checkout_ui;
 
 private:
     void setReturnBookConnections();
     void setCheckoutBookConnections();
-    bool isUserExist(const uint &user_id);
-    bool isBookExist(const uint &book_id);
-    const QString getFineAmount(const QDate return_date);
-    bool isBorrowerExist(const uint &user_id, const uint &book_id);
+    const float getFineAmount(const QDate return_date);
+    bool isUserExist(const uint &user_id, MySqlQuery &query);
+    bool isBookExist(const uint &book_id, MySqlQuery &query);
+    void alertNotReturned(const uint &user_id, const uint &book_id);
+    void alertNotBorrowed(const uint &user_id, const uint &book_id);
+    void handleTransacFailure(MySqlDatabase &db, MySqlQuery &query);
+    bool isBorrowerExist(const uint &user_id, const uint &book_id, MySqlQuery &query);
 };
 
 #endif // TRANSACMANAGER_H

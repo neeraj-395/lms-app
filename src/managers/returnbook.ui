@@ -16,6 +16,9 @@
   <property name="windowTitle">
    <string>Library Application</string>
   </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <widget class="QPushButton" name="verifyBtn">
    <property name="geometry">
     <rect>
@@ -46,12 +49,12 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>60</y>
+     <y>120</y>
      <width>341</width>
-     <height>257</height>
+     <height>191</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="returnForm">
+   <layout class="QFormLayout" name="detailsForm">
     <property name="horizontalSpacing">
      <number>10</number>
     </property>
@@ -71,44 +74,30 @@
      <number>10</number>
     </property>
     <item row="0" column="0">
-     <widget class="QLabel" name="userIdLB">
+     <widget class="QLabel" name="usernameLabel">
       <property name="text">
-       <string>User Id:</string>
+       <string>User Name:</string>
       </property>
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QLineEdit" name="userIdLineEdit">
-      <property name="placeholderText">
-       <string notr="true">verify!</string>
+     <widget class="QLineEdit" name="userNameLineEdit">
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
     <item row="1" column="0">
-     <widget class="QLabel" name="bookIdLB">
-      <property name="text">
-       <string>Book Id:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="bookIdLineEdit">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="placeholderText">
-       <string>verify!</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
      <widget class="QLabel" name="bookTitleLB">
       <property name="text">
        <string>Book Title:</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="1" column="1">
      <widget class="QLineEdit" name="bookTitleLineEdit">
       <property name="enabled">
        <bool>true</bool>
@@ -119,22 +108,25 @@
       <property name="readOnly">
        <bool>true</bool>
       </property>
+      <property name="clearButtonEnabled">
+       <bool>false</bool>
+      </property>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="2" column="0">
      <widget class="QLabel" name="checkoutLB">
       <property name="text">
        <string>Checkout</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
+    <item row="2" column="1">
      <widget class="QDateEdit" name="checkoutDate">
       <property name="enabled">
        <bool>true</bool>
       </property>
       <property name="wrapping">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="frame">
        <bool>true</bool>
@@ -148,74 +140,72 @@
       <property name="keyboardTracking">
        <bool>true</bool>
       </property>
+      <property name="displayFormat">
+       <string>dd/MM/yyyy</string>
+      </property>
       <property name="calendarPopup">
-       <bool>true</bool>
+       <bool>false</bool>
+      </property>
+      <property name="currentSectionIndex">
+       <number>0</number>
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
+    <item row="3" column="0">
      <widget class="QLabel" name="returnByLB">
       <property name="text">
-       <string>Return By:</string>
+       <string>Return On:</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
-     <widget class="QDateEdit" name="returnByDate">
+    <item row="3" column="1">
+     <widget class="QDateEdit" name="returnOnDate">
       <property name="enabled">
        <bool>true</bool>
+      </property>
+      <property name="wrapping">
+       <bool>false</bool>
       </property>
       <property name="readOnly">
        <bool>true</bool>
       </property>
-      <property name="calendarPopup">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="keyboardTracking">
        <bool>true</bool>
+      </property>
+      <property name="displayFormat">
+       <string>dd/MM/yyyy</string>
+      </property>
+      <property name="calendarPopup">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
-    <item row="6" column="0">
-     <widget class="QLabel" name="fineLB">
+    <item row="4" column="0">
+     <widget class="QLabel" name="fineLabel">
       <property name="text">
        <string>Fine (Rs):</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="1">
-     <widget class="QLineEdit" name="fineLineEdit">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="cursor">
-       <cursorShape>ArrowCursor</cursorShape>
-      </property>
+    <item row="4" column="1">
+     <widget class="QDoubleSpinBox" name="fineSpinBox">
       <property name="readOnly">
        <bool>true</bool>
       </property>
-      <property name="placeholderText">
-       <string/>
+      <property name="prefix">
+       <string>₹</string>
       </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="usernameLabel">
-      <property name="text">
-       <string>User Name:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="userNameLineEdit">
-      <property name="cursor">
-       <cursorShape>ArrowCursor</cursorShape>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
+      <property name="maximum">
+       <double>9999999.990000000223517</double>
       </property>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="returnBtn">
+  <widget class="QPushButton" name="proceedBtn">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -246,6 +236,86 @@
    <property name="text">
     <string>Reset</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>70</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="userIdForm">
+    <property name="horizontalSpacing">
+     <number>10</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>10</number>
+    </property>
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <property name="topMargin">
+     <number>10</number>
+    </property>
+    <property name="rightMargin">
+     <number>10</number>
+    </property>
+    <property name="bottomMargin">
+     <number>10</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="userIdLabel">
+      <property name="text">
+       <string>User Id:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QSpinBox" name="userIdSpinBox"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>70</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="bookIdForm">
+    <property name="horizontalSpacing">
+     <number>10</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>10</number>
+    </property>
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <property name="topMargin">
+     <number>10</number>
+    </property>
+    <property name="rightMargin">
+     <number>10</number>
+    </property>
+    <property name="bottomMargin">
+     <number>10</number>
+    </property>
+    <item row="0" column="1">
+     <widget class="QSpinBox" name="bookIdSpinBox"/>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="bookIdLabel">
+      <property name="text">
+       <string>Book Id:</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

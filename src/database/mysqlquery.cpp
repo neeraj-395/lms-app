@@ -10,6 +10,11 @@ QList<QSqlRecord> MySqlQuery::getRecords()
     return records;
 }
 
+bool MySqlQuery::setAutoCommit(bool auto_commit)
+{
+    return execQuery(auto_commit ? "SET autocommit=1;" : "SET autocommit=0;");
+}
+
 bool MySqlQuery::execQuery(const QString &stmt)
 {
     if(!exec(stmt)) {

@@ -13,14 +13,6 @@ BookManager::BookManager(QWidget *parent)
 {
     ui->setupUi(this);
 
-    lineEditList = {
-        ui->bookIdLineEdit,
-        ui->titleLineEdit,   // The order of these elements is arranged
-        ui->authorLineEdit, // according to the database schema.
-        ui->ISBNLineEdit,
-        ui->quantityLineEdit
-    };
-
     connect(ui->loadBookBtn,  &QPushButton::clicked,
     this, &BookManager::handleLoadBookDataRequest);
 }
@@ -68,7 +60,7 @@ void BookManager::handleSearchBookRequest()
 
 void BookManager::handleAddBookRequest()
 {
-    if(!QUtils::validateLineEdits(lineEditList.mid(1))) {
+    if(!QUtils::validateLineEdits(getLineEdits().mid(1))) {
          Alerts::critical(this, "Some fields are empty. "
                                 "Please fill them in to proceed.");
          return;
@@ -77,10 +69,10 @@ void BookManager::handleAddBookRequest()
     MySqlQuery query;
 
     bool result = query.execQuery(BookQueries::addBook(), {
-        {":title", lineEditList.at(1)->text()},
-        {":author", lineEditList.at(2)->text()},
-        {":isbn", lineEditList.at(3)->text()},
-        {":quantity", lineEditList.at(4)->text()}
+        {":title",ui->titleLineEdit->text()},
+        {":isbn",ui->authorLineEdit->text()},
+        {":author",ui->authorLineEdit->text()},
+        {":quantity",ui->quantityLineEdit->text()}
     });
     
     if(!result || !query.numRowsAffected()) {
@@ -90,21 +82,21 @@ void BookManager::handleAddBookRequest()
 
     Alerts::info(this, "The book has been successfully "
                        "added to the library database!");
-    QUtils::clearLineEdits(lineEditList);
+    QUtils::clearLineEdits(getLineEdits());
 }
 
 
 void BookManager::handleRemoveBookRequest()
 {
     if(ui->bookIdLineEdit->text().isEmpty()) {
-       Alerts::warn(this, "Book Id field cannot be empty.");
+       Alerts::warn(this, "Book Id field can't be empty.");
        return;
     }
 
     MySqlQuery query;
 
     bool result = query.execQuery(BookQueries::removeBook(), {
-        {":book_id", ui->bookIdLineEdit->text()} 
+        {":book_id", ui->bookIdLineEdit->text().toUInt()}
     });
 
     if(!result || !query.numRowsAffected()) {
@@ -113,25 +105,25 @@ void BookManager::handleRemoveBookRequest()
     }
     Alerts::info(this, "Book removal successful! The book is "
                        "no longer available in the library.");
-    QUtils::clearLineEdits(lineEditList); // clear the form content
+    QUtils::clearLineEdits(getLineEdits()); // clear the form content
 }
 
 void BookManager::handleEditBookRequest()
 {
-    if(!QUtils::validateLineEdits(lineEditList)) {
-         Alerts::warn(this, "Some fields are empty. Please "
-                            "fill them in to proceed.");
+    if(!QUtils::validateLineEdits(getLineEdits())) {
+         Alerts::warn(this, "Some fields are empty. "
+                            "Please fill them in to proceed.");
          return;
     }
 
     MySqlQuery query;
 
     bool result = query.execQuery(BookQueries::editBook(), {
-        {":isbn", lineEditList.at(3)->text()},
-        {":title", lineEditList.at(1)->text()},
-        {":author", lineEditList.at(2)->text()},
-        {":book_id", lineEditList.at(0)->text()},
-        {":quantity", lineEditList.at(4)->text()}
+        {":isbn",ui->ISBNLineEdit->text()},
+        {":title",ui->titleLineEdit->text()},
+        {":author",ui->authorLineEdit->text()},
+        {":quantity",ui->quantityLineEdit->text()},
+        {":book_id",ui->bookIdLineEdit->text().toUInt()}
     });
     
     if(!result || !query.numRowsAffected()) {
@@ -140,7 +132,7 @@ void BookManager::handleEditBookRequest()
     }
     Alerts::info(this, "Book edit successful! The updated "
                        "details are now saved.");
-    QUtils::clearLineEdits(lineEditList);
+    QUtils::clearLineEdits(getLineEdits());
 }
 
 void BookManager::handleLoadBookDataRequest()
@@ -148,16 +140,16 @@ void BookManager::handleLoadBookDataRequest()
     MySqlQuery query;
 
     bool result = query.execQuery(BookQueries::loadBook(), {
-        {":book_id", ui->bookIdLineEdit->text()}
+        {":book_id", ui->bookIdLineEdit->text().toUInt()}
     });
 
     if(!result) { emit internalServiceError(); return; }
 
     if (query.next()) {
-        QUtils::setLineEditsText(lineEditList, query.record());
+        QUtils::setLineEditsText(getLineEdits(), query.record());
         Alerts::info(this, "Book data loaded successfully.");
     } else {
-        QUtils::clearLineEdits(lineEditList);
+        QUtils::clearLineEdits(getLineEdits());
         Alerts::warn(this, "Book data was not found.");
     }
 }
@@ -168,35 +160,23 @@ void BookManager::setupUiComponents()
 
     case BookOp::SearchBook:
         ui->operationBtn->setText("Search");
-
-        QUtils::setWidgetsEnabled({
-            ui->bookIdLineEdit,
-            ui->loadBookBtn,
-            ui->quantityLineEdit
-        }, false);
-
+        ui->loadBookBtn->setEnabled(false);
+        ui->bookIdLineEdit->setEnabled(false);
+        ui->quantityLineEdit->setEnabled(false);
         break;
 
     case BookOp::AddBook:
         ui->operationBtn->setText("Add");
-
-        QUtils::setWidgetsEnabled({
-            ui->bookIdLineEdit,
-            ui->loadBookBtn
-        }, false);
-
+        ui->loadBookBtn->setEnabled(false);
+        ui->bookIdLineEdit->setEnabled(false);
         break;
 
     case BookOp::RemoveBook:
         ui->operationBtn->setText("Remove");
-
-        QUtils::setWidgetsEnabled({
-            ui->titleLineEdit,
-            ui->ISBNLineEdit,
-            ui->authorLineEdit,
-            ui->quantityLineEdit
-        }, false);
-
+        ui->ISBNLineEdit->setEnabled(false);
+        ui->titleLineEdit->setEnabled(false);
+        ui->authorLineEdit->setEnabled(false);
+        ui->quantityLineEdit->setEnabled(false);
         break;
 
     case BookOp::EditBook:
@@ -231,23 +211,30 @@ void BookManager::setupConnection()
     }
 }
 
+QList<QLineEdit*> BookManager::getLineEdits()
+{
+    return {ui->bookIdLineEdit,
+            ui->titleLineEdit,   // The order of these elements is arranged
+            ui->authorLineEdit, // according to the database schema.
+            ui->ISBNLineEdit,
+            ui->quantityLineEdit};
+}
+
 void BookManager::closeEvent(QCloseEvent *event)
 {
     // cleanUp form line edits input
-    QUtils::clearLineEdits(lineEditList);
+    QUtils::clearLineEdits(getLineEdits());
 
     // disconnect connection
     disconnect(ui->operationBtn,&QPushButton::clicked, this, nullptr);
 
     // set the default ui state.
-    QUtils::setWidgetsEnabled({
-        ui->bookIdLineEdit,
-        ui->titleLineEdit,
-        ui->ISBNLineEdit,
-        ui->authorLineEdit,
-        ui->quantityLineEdit,
-        ui->loadBookBtn
-    }, true);
+    ui->bookIdLineEdit->setEnabled(true);
+    ui->titleLineEdit->setEnabled(true);
+    ui->ISBNLineEdit->setEnabled(true);
+    ui->authorLineEdit->setEnabled(true);
+    ui->quantityLineEdit->setEnabled(true);
+    ui->loadBookBtn->setEnabled(true);
 
     QDialog::closeEvent(event);
 }

@@ -13,9 +13,10 @@ namespace QUtils
     bool validateLineEdits(const QList<QLineEdit*> &lineEdits);
     void clearLineEdits(QList<QLineEdit*> lineEdits);
     void setLineEditsReadOnly(QList<QLineEdit*> lineEdits, bool readOnly);
-    void setWidgetsEnabled(const QList<QWidget*> &widgets, bool enable);
     void setLineEditsText(const QList<QLineEdit*> &lineEdits, const QSqlRecord &data);
     void showTableViewDialog(QWidget *parent, const QString &title, QAbstractItemModel *model);
+    //template<typename... LineEdits>
+    //void clearLineEdits(LineEdits*... lineEdits){ (lineEdits->clear(), ...); }
 }
 
 namespace Alerts {

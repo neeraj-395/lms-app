@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     , login_ui(new LoginForm(this))
     , user_ui(new UserPortal(this))
     , librarian_ui(new LibrarianPortal(this))
+    , widgets(new QStackedWidget(this))
 {
     ui->setupUi(this);
     
@@ -67,7 +68,6 @@ void MainWindow::showLoginInterface(const QString &title, Acc::Type type)
 
 void MainWindow::setupStackedWidgets() 
 {
-    widgets = new QStackedWidget(this);
     widgets->addWidget(ui->centralwidget);
     widgets->addWidget(login_ui);
     widgets->addWidget(user_ui);

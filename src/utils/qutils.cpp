@@ -22,11 +22,6 @@ void QUtils::clearLineEdits(QList<QLineEdit*> lineEdits)
     for (QLineEdit* lineEdit : lineEdits) lineEdit->clear();
 }
 
-void QUtils::setWidgetsEnabled(const QList<QWidget*> &fields, bool enable)
-{
-    for(QWidget* field : fields) field->setEnabled(enable);
-}
-
 void QUtils::setLineEditsReadOnly(QList<QLineEdit*> lineEdits, bool readOnly)
 {
     for (QLineEdit* lineEdit : lineEdits) lineEdit->setReadOnly(readOnly);

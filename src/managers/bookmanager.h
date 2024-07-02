@@ -47,11 +47,11 @@ protected:
 private:
     Ui::BookManager   *ui;
     BookOp::Type      operation;
-    QList<QLineEdit*> lineEditList;
 
 private:
     void setupConnection();
     void setupUiComponents();
+    QList<QLineEdit*> getLineEdits();
 };
 
 #endif // BOOKMANAGER_H

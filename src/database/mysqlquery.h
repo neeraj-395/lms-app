@@ -17,6 +17,7 @@ public:
     ));
 
     QList<QSqlRecord> getRecords();
+    bool setAutoCommit(bool auto_commit);
     bool execQuery(const QString &stmt);
     bool execQuery(const QString &stmt, const QHash<QString, QVariant> &bind_values);
     QSqlQueryModel *getSqlQueryModel();
